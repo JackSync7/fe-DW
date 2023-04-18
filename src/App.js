@@ -28,6 +28,7 @@ import { ModalLoginContext } from "./context/modalLogin";
 import { StatusLoginContext } from "./context/statusLoginContext";
 import { UserDropDownContext } from "./context/userDropdown"
 import { API, setAuthToken } from "./config/api"
+// import UpdateFilm from "./page/admin/UpdateFilm";
 
 
 // export const ShowMenu = createContext("testt")
@@ -103,16 +104,17 @@ function App() {
               <Route element={<PrivateRouteUser />} >
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/payment" element={<Payment />} />
-                <Route path="/detailTvShow" element={<DetailTvSeries />} />
-                <Route path="/detailMovies" element={<DetailMovies />} />
+                <Route path="/detailTvShow/" element={<DetailTvSeries />} />
+                <Route path="/detailMovies/" element={<DetailMovies />} />
               </Route>
               <Route element={<PrivateRouteAdmin />} >
-                <Route path="/detailTvShow-admin" element={<DetailTvSeries />} />
-                <Route path="/detailMovies-admin" element={<DetailMovies />} />
+                <Route path="/detailTvShow-admin/" element={<DetailTvSeries />} />
+                <Route path="/detailMovies-admin/" element={<DetailMovies />} />
                 <Route path="/tvshow" element={<TVshow />} />
                 <Route path="/Movies" element={<Movies />} />
                 <Route path="/film" element={<Film />} />
                 <Route path="/addfilm" element={<AddFilm />} />
+                {/* <Route path="/updatefilm" element={<UpdateFilm />} /> */}
                 <Route path="/transaction" element={<Transaction />} />
               </Route>
             </Route>

@@ -37,6 +37,8 @@ function Login(getValue) {
                 setLoginModal(false)
                 navigate('/film');
             } else {
+                setIsLogins(true)
+                setLoginModal(false)
                 navigate('/');
             }
             setAuthToken(localStorage.token);

@@ -57,7 +57,7 @@ function Regis(getValue) {
                 Swal.fire({
                     icon: 'error',
                     title: 'Incorrect Email or password...',
-                    text: 'Login Failed',
+                    text: 'Regis Failed',
                 })
             );
             setMessage(alert);
@@ -82,11 +82,7 @@ function Regis(getValue) {
                                 <option value="male">Mele</option>
                                 <option value="female">Female</option>
                             </select>
-                            <select required onChange={handleChange} value={role} name="role" className="py-2 px-4 w-72 bg-neutral-600 border-2 border-slate-50 text-white rounded-md" id="role">
-                                <option value="default">Role</option>
-                                <option value="admin">Admin</option>
-                                <option value="user">User</option>
-                            </select>
+
                             <input required onChange={handleChange} value={phone} name="phone" className="py-2 px-4 w-72 bg-neutral-600 border-2 border-slate-50 text-white rounded-md" id="phone" type="text" placeholder="Phone" />
                             <input required onChange={handleChange} value={address} name="address" className="py-2 px-4 w-72 bg-neutral-600 border-2 border-slate-50 text-white rounded-md" id="address" type="text" placeholder="Address" />
                             <button type="submit" className="bg-white text-red-600 font-bold px-28 py-2 rounded-md mt-4 ">Register</button>

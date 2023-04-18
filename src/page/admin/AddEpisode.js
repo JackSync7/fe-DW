@@ -7,6 +7,8 @@ import Swal from 'sweetalert2';
 
 const AddEpisode = (props) => {
   // const [message, setMessage] = useState(null);
+  const urlParams = new URLSearchParams(window.location.search);
+  const params = urlParams.get("id");
   const [_, modalDispatch] = useContext(ComponentContext);
   const [form, setForm] = useState({
     image: '',
@@ -38,10 +40,11 @@ const AddEpisode = (props) => {
       formData.set('image', form.image[0], form.image[0].name);
       formData.set('linkfilm', form.link);
       formData.set('year', form.year);
-      formData.set('film_id', '2');
+      formData.set('film_id', params);
 
       const response = await API.post('/episode', formData, config);
       console.log('add episode success', response);
+      console.log("ini params : ", JSON.stringify(params))
       Swal.fire({
         position: 'center',
         icon: 'success',

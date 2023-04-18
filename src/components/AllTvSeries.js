@@ -6,18 +6,38 @@ import { BsSearch } from "react-icons/bs";
 import moment from "moment"
 import { UserContext } from "../context/userContext";
 import { API } from "../config/api"
-import { useQuery } from "react-query";
+import { useMutation, useQuery } from "react-query";
+import Swal from "sweetalert2";
+
 
 function AllTvSeries(props) {
     const [allTv, setAllTv] = useState([])
     const [getUrl, setUrl] = useState("detailTvShow")
     const [state] = useContext(UserContext)
-    let { data: films } = useQuery('GetSeriesCache', async () => {
+
+    let { data: films, refetch } = useQuery('GetSeriesCache', async () => {
         const response = await API.get('/films-series');
         return response.data.data;
     });
+
+    const deleteHandle = useMutation(async (id) => {
+        try {
+            await API.delete(`/film/${id}`)
+            refetch()
+            Swal.fire({
+                position: 'center',
+                icon: 'success',
+                title: 'Delete successfully',
+                showConfirmButton: false,
+            })
+        } catch (err) {
+            console.error(err)
+        }
+    })
+
+
     useEffect(() => {
-        if (state.user.roles === "admin") {
+        if (state?.user.roles === "admin") {
             setUrl("detailTvShow-admin")
         }
     }, [])
@@ -31,16 +51,22 @@ function AllTvSeries(props) {
     const GetAllTv = () => {
         return films?.map((tv, i) => {
             return (
-                <Link to={`/${getUrl}/?id=${tv?.id}`}>
-                    <div className="w-48" key={i}>
+                <div className="w-48" key={i}>
+                    <Link to={`/${getUrl}/?id=${tv?.id}`}>
                         <img className="rounded-md" src={tv?.thumbnail} />
-                        <div className=" text-slate-100 font-normal text-md px-1 mt-2 h-12">{tv?.title}</div>
-                        <div className="flex justify-between mt-1 px-1">
-                            <div className=" font-medium text-zinc-500">{tv?.year}</div>
+                    </Link>
+                    <div className=" text-slate-100 font-normal text-md px-1 mt-2 h-12">{tv?.title}</div>
+                    <div className="flex justify-between mt-1 px-1">
+                        <div className=" font-medium text-zinc-500">{tv?.year}</div>
 
-                        </div>
                     </div>
-                </Link>
+                    {state.isLogin && state.user.roles === "admin" && (
+                        <div className="flex  justify-around">
+                            <button onClick={() => { deleteHandle.mutate(tv?.id) }} className="bg-red-600 mt-4 text-sm  text-white px-2 py-1 rounded-md">Delete</button>
+                            <button className="bg-blue-600 mt-4 text-sm text-white px-2 py-1 rounded-md">Update</button>
+                        </div>
+                    )}
+                </div>
             )
         })
     }

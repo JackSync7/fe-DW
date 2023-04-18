@@ -4,6 +4,8 @@ import { getMovieList, getTvList, getAllMovieList, getAllTvList } from "./ApiMov
 import { FaStar } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import moment from "moment";
+import { useQuery } from "react-query";
+import { API } from "../config/api";
 
 const MovieList = () => {
     const [tvSeries, setTvSeries] = useState([])
@@ -11,6 +13,24 @@ const MovieList = () => {
     const [allMovie, setAllMovie] = useState([])
     const [allTv, setAllTv] = useState([])
 
+    const {
+        data: films,
+
+    } = useQuery('seriesListCache', async () => {
+        const response = await API.get('/films-movie');
+        return response.data.data.slice(0, 6);
+    });
+
+    const {
+        data: series,
+
+    } = useQuery('moviesListCache', async () => {
+        const response = await API.get('/films-series');
+        return response.data.data.slice(0, 6);
+    });
+
+    console.log("films : ", films)
+    console.log("SERIES : ", series)
     useEffect(() => {
         getTvList().then((result) => {
             setTvSeries(result)
@@ -30,20 +50,19 @@ const MovieList = () => {
         })
     }, [])
 
-    const DateNovie = moment(movie.release_date).format("YYYY")
+
     const DateModif = moment(tvSeries.first_air_date).format("YYYY")
 
 
     const TvSeries = () => {
-        return tvSeries.map((tv, i) => {
+        return series?.map((tv, i) => {
             return (
                 <Link to={`/detailTvShow/?id=${tv.id}`}>
                     <div className="w-48" key={i}>
-                        <img className="rounded-md" src={`https://image.tmdb.org/t/p/w500/${tv.poster_path}`} />
-                        <div className=" text-slate-100 font-normal text-md px-1 mt-2 h-12">{tv.original_name}</div>
+                        <img className="rounded-md" src={tv.thumbnail} />
+                        <div className=" text-slate-100 font-normal text-md px-1 mt-2 h-12">{tv.title}</div>
                         <div className="flex justify-between mt-1 px-1">
-                            <div className=" font-medium text-zinc-500">{DateModif}</div>
-                            <div className="mb-4 mr-2 text-slate-100"> <div className="flex"> <FaStar className="mt-1 mr-1 text-orange-400" /> {tv.vote_average}</div></div>
+                            <div className=" font-medium text-zinc-500">{tv.year}</div>
                         </div>
                     </div>
                 </Link>
@@ -52,15 +71,14 @@ const MovieList = () => {
     }
 
     const Movies = () => {
-        return movie.map((movie, i) => {
+        return films?.map((movie, i) => {
             return (
                 <Link to={`/detailMovies/?id=${movie.id}`}>
                     <div className="w-48" key={i}>
-                        <img className="rounded-md" src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`} />
+                        <img className="rounded-md" src={movie.thumbnail} />
                         <div className=" text-slate-100 font-normal text-md px-1 mt-2 h-12">{movie.title}</div>
                         <div className="flex justify-between mt-1 px-1">
-                            <div className=" font-medium text-zinc-500">{DateModif}</div>
-                            <div className="mb-4 mr-2 text-slate-100"> <div className="flex"> <FaStar className="mt-1 mr-1 text-orange-400" /> {movie.vote_average}</div></div>
+                            <div className=" font-medium text-zinc-500">{movie.year}</div>
                         </div>
                     </div>
                 </Link>

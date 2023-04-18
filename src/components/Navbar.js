@@ -81,7 +81,7 @@ function Navbar(props) {
                 </div>
             ) : null}
             <div className="justify-center w-full">
-                <img className="mx-auto mt-2" src={require("../images/icon.png")} alt="" />
+                <img className="ml-28 mt-2" src={require("../images/icon.png")} alt="" />
             </div>
             <div className="gap-3 flex mr-6 w-full justify-end">
 
