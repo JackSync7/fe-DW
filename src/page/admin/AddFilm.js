@@ -2,12 +2,13 @@ import { useState } from 'react';
 import { API } from '../../config/api'
 import { useMutation, useQuery } from 'react-query';
 import Swal from 'sweetalert2';
+import { useNavigate } from 'react-router-dom';
 
 
 const AddFilm = () => {
 
 
-
+    const navigate = useNavigate()
     const [preview, setPreview] = useState(null);
     const [form, setForm] = useState({
         title: '',
@@ -48,7 +49,6 @@ const AddFilm = () => {
             formData.set('link', form.link);
             formData.set('desc', form.description);
             formData.set('category_id', form.category_id);
-
             const response = await API.post('/film', formData, config);
             console.log('add movie success', response);
             console.log('add', form);
@@ -59,7 +59,7 @@ const AddFilm = () => {
                 showConfirmButton: false,
                 timer: 1500
             })
-
+            navigate('/film')
         } catch (err) {
             e.preventDefault();
             console.log('add movie failed', err);

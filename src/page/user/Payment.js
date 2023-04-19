@@ -6,7 +6,7 @@ import { UserContext } from "../../context/userContext"
 
 
 
-const Profile = () => {
+const Payment = () => {
     const [state] = useContext(UserContext)
     let navigate = useNavigate();
     // let { id } = useParams();
@@ -42,7 +42,6 @@ const Profile = () => {
                 },
             };
             const data = {
-
                 seller_id: state.user.id,
                 price: e.price,
             };
@@ -140,4 +139,4 @@ const Profile = () => {
     )
 }
 
-export default Profile
+export default Payment

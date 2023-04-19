@@ -27,40 +27,50 @@ function Regis(getValue) {
         setForm({ ...form, [e.target.name]: e.target.value })
     }
     const handleSubmit = useMutation(async (e) => {
-        try {
-            e.preventDefault();
+        if (form.gender) {
 
-            const response = await API.post('/register', form);
+            try {
+                e.preventDefault();
 
-            console.log("register success : ", response)
-            const alert = (
-                Swal.fire({
-                    position: 'center',
-                    icon: 'success',
-                    title: 'Welcome',
-                    showConfirmButton: false,
-                    timer: 1500
-                })
-            );
-            setMessage(alert);
-            setForm({
-                email: "",
-                password: "",
-                fullname: "",
-                gender: "",
-                phone: "",
-                address: "",
+                const response = await API.post('/register', form);
 
-            });
-        } catch (err) {
-            const alert = (
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Incorrect Email or password...',
-                    text: 'Regis Failed',
-                })
-            );
-            setMessage(alert);
+                console.log("register success : ", response)
+                const alert = (
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'success',
+                        title: 'Welcome',
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                );
+                setMessage(alert);
+                setForm({
+                    email: "",
+                    password: "",
+                    fullname: "",
+                    gender: "",
+                    phone: "",
+                    address: "",
+
+                });
+            } catch (err) {
+                const alert = (
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Incorrect Email or password...',
+                        text: 'Regis Failed',
+                    })
+                );
+                setMessage(alert);
+            }
+        } else {
+            Swal.fire({
+                icon: 'error',
+                title: 'Gender cannot be empty',
+                text: 'Regis Failed',
+                timer: 1500
+            })
         }
     })
     return (
