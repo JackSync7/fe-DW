@@ -20,15 +20,26 @@ function AllTvSeries(props) {
         return response.data.data;
     });
 
-    const deleteHandle = useMutation(async (id) => {
+    const deleteHandle = useMutation((id) => {
         try {
-            await API.delete(`/film/${id}`)
-            refetch()
             Swal.fire({
-                position: 'center',
-                icon: 'success',
-                title: 'Delete successfully',
-                showConfirmButton: false,
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then(async (result) => {
+                if (result.isConfirmed) {
+                    Swal.fire(
+                        'Deleted!',
+                        'Your file has been deleted.',
+                        'success'
+                    )
+                    await API.delete(`/film/${id}`)
+                    refetch()
+                }
             })
         } catch (err) {
             console.error(err)
@@ -63,7 +74,7 @@ function AllTvSeries(props) {
                     {state.isLogin && state.user.roles === "admin" && (
                         <div className="flex  justify-around">
                             <button onClick={() => { deleteHandle.mutate(tv?.id) }} className="bg-red-600 mt-4 text-sm  text-white px-2 py-1 rounded-md">Delete</button>
-                            <button className="bg-blue-600 mt-4 text-sm text-white px-2 py-1 rounded-md">Update</button>
+                            <Link to={`/updatefilm/${tv.id}`}><button className="bg-blue-600 mt-4 text-sm text-white px-2 py-1 rounded-md">Update</button></Link>
                         </div>
                     )}
                 </div>

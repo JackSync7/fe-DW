@@ -8,7 +8,9 @@ import Trailer from "react-youtube"
 import { UserContext } from "../context/userContext";
 import { ComponentContext } from "../context/ComponentContext";
 import AddEpisode from "../page/admin/AddEpisode"
+import UpdateEpisode from "../page/admin/UpdateEpisode";
 import { API } from "../config/api"
+import { Carousel } from 'flowbite-react';
 
 
 
@@ -18,6 +20,7 @@ const DetailTvSeries = () => {
     const [detailSeries, setDetailSeries] = useState([])
     const [getTrailer, setTrailer] = useState([])
     const [detailMovie, setDetailMovie] = useState({});
+    const [dataEpisode, setDataEpisode] = useState([]);
     const [state] = useContext(UserContext)
     const [ComponentState, ComponentDispatch] = useContext(ComponentContext)
 
@@ -26,39 +29,38 @@ const DetailTvSeries = () => {
         const response = await API.get(`/film/` + params);
         setDetailMovie(response.data.data);
     }
+    const fetchEpisode = async () => {
+        const response = await API.get(`/film/${params}/episode`);
+        setDataEpisode(response.data.data);
+    }
 
-    console.log("ini data : ", detailMovie.link)
+
+
     useEffect(() => {
-
-        // getMovieDetail(params).then((result) => {
-        //     setDetailSeries(result)
-        // })
+        fetchEpisode();
         fetchData();
+
     }, [])
-    // const { data: movie } = useQuery("moviesListCache", async () => {
-    //     const response = await API.get(`/film/` + params);
-    //     return response.data.data;
-    // });
+
     const genre = (detailSeries.genres)
 
     const AddEpisodes = () => {
         return (
-            <div className="flex justify-end">
-                <button onClick={() => ComponentDispatch({ type: 'ADD_EPISODE_MODAL' })} className="bg-red-600 text-white p-2 mr-96 rounded-md mt-10 ">Add Episode</button>
+            <div className="flex justify-end gap-6">
+                <button onClick={() => ComponentDispatch({ type: 'ADD_EPISODE_MODAL' })} className="bg-red-600 text-white p-2  rounded-md mt-10 ">Add Episode</button>
+                <button onClick={() => ComponentDispatch({ type: 'UPDATE_EPISODE_MODAL' })} className="text-red-600 bg-white p-2 mr-72 rounded-md mt-10 ">Update Episode</button>
             </div>
         )
     }
 
     const RenderTrailer = () => {
-        // const trailer = await detailSeries.videos.results.find(vid => vid.name === "Official Trailer")
-        // setTrailer(trailer.key)
         return (
-            <>
+            <div>
                 <ReactPlayer url={detailMovie?.link} />
-
-            </>
+            </div>
         )
     }
+
 
     const year = moment(detailSeries.release_date).format('YYYY')
     const Rating = (detailSeries.vote_average)
@@ -66,6 +68,8 @@ const DetailTvSeries = () => {
     return (
         <div className="App">
             {ComponentState.isAddEpisode && <AddEpisode />}
+            {ComponentState.isUpdateEpisode && <UpdateEpisode />}
+
             <header className="App-header">
                 <div className="flex w-full flex-wrap h-96 items-center gap-5 ">
                     <div className="flex flex-col" >
@@ -90,13 +94,24 @@ const DetailTvSeries = () => {
                                 </div>
 
                             </div>
-                            <div className="w-">
-
-                                {/* <img className="" src={`https://image.tmdb.org/t/p/w500/${detailSeries.backdrop_path}`} /> */}
-                                <RenderTrailer
-                                    width="600px"
-                                    height="300px"
-                                />
+                            <div className="">
+                                <div className="h-full w-96 ">
+                                    <Carousel>
+                                        {dataEpisode.map((data, index) => (
+                                            <div className='' key={index}>
+                                                <div className='flex flex-col' >
+                                                    <img className='object-none h-52'
+                                                        src={data.thumbnail}
+                                                        alt="..."
+                                                    />
+                                                </div>
+                                                <div>
+                                                    <p className='text-white '>{data.title}</p>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </Carousel>
+                                </div>
                             </div>
                         </div>
                     </div>

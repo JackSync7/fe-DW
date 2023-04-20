@@ -6,6 +6,7 @@ const initialState = {
 
     isAddEpisode: false,
     isAddCategory: false,
+    isUpdateCategory: false,
 };
 
 const reducer = (state, action) => {
@@ -17,6 +18,10 @@ const reducer = (state, action) => {
             return {
                 isAddEpisode: true,
             };
+        case 'UPDATE_EPISODE_MODAL':
+            return {
+                isUpdateEpisode: true,
+            };
         case 'ADD_CATEGORY_MODAL':
             return {
                 isAddCategory: true,
@@ -25,6 +30,7 @@ const reducer = (state, action) => {
             return {
                 isAddCategory: false,
                 isAddEpisode: false,
+                isUpdateEpisode: false,
             };
         default:
             throw new Error();

@@ -28,6 +28,8 @@ import { ModalLoginContext } from "./context/modalLogin";
 import { StatusLoginContext } from "./context/statusLoginContext";
 import { UserDropDownContext } from "./context/userDropdown"
 import { API, setAuthToken } from "./config/api"
+import Update from "./page/admin/Update";
+
 // import UpdateFilm from "./page/admin/UpdateFilm";
 
 
@@ -114,7 +116,7 @@ function App() {
                 <Route path="/Movies" element={<Movies />} />
                 <Route path="/film" element={<Film />} />
                 <Route path="/addfilm" element={<AddFilm />} />
-                {/* <Route path="/updatefilm" element={<UpdateFilm />} /> */}
+                <Route path="/updatefilm/:id" element={<Update />} />
                 <Route path="/transaction" element={<Transaction />} />
               </Route>
             </Route>

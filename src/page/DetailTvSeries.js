@@ -8,11 +8,15 @@ import { API } from "../config/api";
 import { ComponentContext } from "../context/ComponentContext";
 import ReactPlayer from "react-player";
 import { UserContext } from "../context/userContext";
+import AddEpisode from "./admin/AddEpisode";
+import UpdateEpisode from "./admin/UpdateEpisode";
+import { Carousel } from "flowbite-react";
 
 const DetailTvSeries = () => {
     const urlParams = new URLSearchParams(window.location.search);
     const params = urlParams.get("id");
     const [state] = useContext(UserContext)
+    const [dataSeries, setDataSeries] = useState([])
     const [ComponentState, ComponentDispatch] = useContext(ComponentContext)
     const [detailSeries, setDetailSeries] = useState([])
 
@@ -21,10 +25,13 @@ const DetailTvSeries = () => {
         const response = await API.get(`/film/` + params);
         setDetailSeries(response.data.data);
     }
-
-    console.log("ini data : ", detailSeries)
+    const fetchSeries = async () => {
+        const response = await API.get(`/film/${params}/episode`);
+        setDataSeries(response.data.data);
+    }
     useEffect(() => {
         fetchData();
+        fetchSeries()
     }, [])
 
 
@@ -39,18 +46,13 @@ const DetailTvSeries = () => {
     const genre = (detailSeries.genres)
     const AddEpisodes = () => {
         return (
-            <div className="flex justify-end">
-                <button onClick={() => ComponentDispatch({ type: 'ADD_EPISODE_MODAL' })} className="bg-red-600 text-white p-2 mr-96 rounded-md mt-10 ">Add Episode</button>
+            <div className="flex justify-end gap-6">
+                <button onClick={() => ComponentDispatch({ type: 'ADD_EPISODE_MODAL' })} className="bg-red-600 text-white p-2  rounded-md mt-10 ">Add Episode</button>
+                <button onClick={() => ComponentDispatch({ type: 'UPDATE_EPISODE_MODAL' })} className="text-red-600 bg-white p-2 mr-72 rounded-md mt-10 ">Update Episode</button>
             </div>
         )
     }
-    const DeleteFilm = () => {
-        return (
-            <div className="flex justify-end">
-                <button onClick={() => ComponentDispatch({ type: 'ADD_EPISODE_MODAL' })} className="bg-red-600 text-white p-2 mr-96 rounded-md mt-10 ">Add Episode</button>
-            </div>
-        )
-    }
+
 
     const Genres = () => {
         return genre?.map((tes, i) => {
@@ -68,6 +70,8 @@ const DetailTvSeries = () => {
 
     return (
         <div className="App">
+            {ComponentState.isAddEpisode && <AddEpisode />}
+            {ComponentState.isUpdateEpisode && <UpdateEpisode />}
             <header className="App-header">
                 <div className="flex w-full flex-wrap h-96 items-center gap-5 ">
                     <div className="flex flex-col" >
@@ -95,7 +99,23 @@ const DetailTvSeries = () => {
                             </div>
                             <div className="">
                                 {/* {detailSeries.last_episode_to_air.still_path ? <LastEpsTrue /> : <LastEpsFalse />} */}
-                                <RenderTrailer />
+                                <div className="h-full w-96 ">
+                                    <Carousel>
+                                        {dataSeries.map((data, index) => (
+                                            <div className='' key={index}>
+                                                <div className='flex flex-col' >
+                                                    <img className='object-none h-52'
+                                                        src={data.thumbnail}
+                                                        alt="..."
+                                                    />
+                                                </div>
+                                                <div>
+                                                    <p className='text-white '>{data.title}</p>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </Carousel>
+                                </div>
                                 <span>episode</span>
                             </div>
                         </div>
