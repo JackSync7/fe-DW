@@ -1,15 +1,24 @@
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useMutation, useQuery } from 'react-query';
 import { API } from '../../config/api';
-
+import { UserContext } from '../../context/userContext';
 import { ComponentContext } from '../../context/ComponentContext';
 import Swal from 'sweetalert2';
+import { useNavigate } from 'react-router-dom';
 
 const AddEpisode = (props) => {
+  const navigate = useNavigate()
   // const [message, setMessage] = useState(null);
   const urlParams = new URLSearchParams(window.location.search);
   const params = urlParams.get("id");
+  const [state] = useContext(UserContext)
+  const [getUrl, setUrl] = useState("/detailMovies")
   const [_, modalDispatch] = useContext(ComponentContext);
+  useEffect(() => {
+    if (state?.user.roles === "admin") {
+      setUrl("/detailMovies-admin")
+    }
+  }, [])
   const [form, setForm] = useState({
     image: '',
     title: '',
@@ -52,7 +61,7 @@ const AddEpisode = (props) => {
         showConfirmButton: false,
         timer: 1500
       })
-
+      navigate(getUrl)
     } catch (err) {
       console.log(form)
       console.log('add episode failed', err);
