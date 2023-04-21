@@ -61,7 +61,7 @@ const AddEpisode = (props) => {
         showConfirmButton: false,
         timer: 1500
       })
-      navigate(getUrl)
+      window.location.reload();
     } catch (err) {
       console.log(form)
       console.log('add episode failed', err);
