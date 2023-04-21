@@ -24,17 +24,7 @@ const AddCategory = (props) => {
   const handleOnSubmit = useMutation(async (e) => {
     try {
       e.preventDefault();
-
-      // const config = {
-      //   headers: {
-      //     'Content-type': 'multipart/form-data',
-      //   },
-      // };
-      const formData = new FormData();
-      formData.set('name', form.name);
-
-
-      const response = await API.post('/category', formData);
+      const response = await API.post('/category', form);
       console.log('add Category success', response);
       console.log(form);
       Swal.fire({
