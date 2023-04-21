@@ -60,6 +60,13 @@ const DetailTvSeries = () => {
             </div>
         )
     }
+    const RenderTrailer2 = () => {
+        return (
+            <div className='w-96 h-64' >
+                <ReactPlayer url={detailMovie?.link} width={'100%'} height={'100%'} />
+            </div>
+        )
+    }
 
 
     const year = moment(detailSeries.release_date).format('YYYY')
@@ -67,8 +74,8 @@ const DetailTvSeries = () => {
     // console.log("32" + detailSeries)
     return (
         <div className="App">
-            {ComponentState.isAddEpisode && <AddEpisode />}
-            {ComponentState.isUpdateEpisode && <UpdateEpisode />}
+            {/* {ComponentState.isAddEpisode && <AddEpisode />}
+            {ComponentState.isUpdateEpisode && <UpdateEpisode />} */}
 
             <header className="App-header">
                 <div className="flex w-full flex-wrap h-96 items-center gap-5 ">
@@ -77,7 +84,7 @@ const DetailTvSeries = () => {
                             <RenderTrailer />
                             {/* <img className="w-2/3" src={`https://image.tmdb.org/t/p/w500/${detailSeries.backdrop_path}`} /> */}
                         </div>
-                        {state?.user.roles === "admin" && <AddEpisodes />}
+                        {/* {state?.user.roles === "admin" && <AddEpisodes />} */}
 
                         <div className="flex px-20 mt-10 gap-8 w-full">
                             <img className="rounded-md w-48" src={detailMovie.thumbnail} />
@@ -96,21 +103,7 @@ const DetailTvSeries = () => {
                             </div>
                             <div className="">
                                 <div className="h-full w-96 ">
-                                    <Carousel>
-                                        {dataEpisode.map((data, index) => (
-                                            <div className='' key={index}>
-                                                <div className='flex flex-col' >
-                                                    <img className='object-none h-52'
-                                                        src={data.thumbnail}
-                                                        alt="..."
-                                                    />
-                                                </div>
-                                                <div>
-                                                    <p className='text-white '>{data.title}</p>
-                                                </div>
-                                            </div>
-                                        ))}
-                                    </Carousel>
+                                    <RenderTrailer2 />
                                 </div>
                             </div>
                         </div>

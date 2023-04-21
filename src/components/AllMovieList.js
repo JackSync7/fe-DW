@@ -72,8 +72,8 @@ function AllMovieList(props) {
                     </div>
                     {state.isLogin && state.user.roles === "admin" && (
                         <div className="flex  justify-around">
-                            <button onClick={() => { deleteHandle.mutate(tv?.id) }} className="bg-red-600 mt-4 text-sm  text-white px-2 py-1 rounded-md">Delete</button>
-                            <Link to={`/updatefilm/${tv.id}`}><button className="bg-blue-600 mt-4 text-sm text-white px-2 py-1 rounded-md">Update</button></Link>
+                            <button onClick={() => { deleteHandle.mutate(tv?.id) }} className="bg-red-600 mt-4 w-20 text-sm text-white px-2 py-1 rounded-md">Delete</button>
+                            <Link to={`/updatefilm/${tv.id}`}><button className="bg-blue-600 w-20 mt-4 text-sm text-white px-2 py-1 rounded-md">Edit</button></Link>
                         </div>
                     )}
                 </div>
