@@ -7,6 +7,7 @@ const initialState = {
     isAddEpisode: false,
     isAddCategory: false,
     isUpdateCategory: false,
+    detailTransaction: false,
 };
 
 const reducer = (state, action) => {
@@ -26,11 +27,16 @@ const reducer = (state, action) => {
             return {
                 isAddCategory: true,
             };
+        case 'DETAIL_TRANSACTION_MODAL':
+            return {
+                detailTransaction: true,
+            };
         case 'CLOSE_MODAL':
             return {
                 isAddCategory: false,
                 isAddEpisode: false,
                 isUpdateEpisode: false,
+                detailTransaction: false,
             };
         default:
             throw new Error();
